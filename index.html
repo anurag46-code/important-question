@@ -69,10 +69,10 @@
         #noBtn {
             background: #e74c3c;
             color: white;
-            position: absolute;
             transition: all 0.1s ease;
             min-width: 80px;
             min-height: 44px;
+            position: relative;
         }
 
         .hearts {
@@ -134,8 +134,6 @@
 
         .confetti {
             position: fixed;
-            width: 10px;
-            height: 10px;
             background: #f39c12;
             animation: confetti-fall 3s linear forwards;
         }
@@ -147,6 +145,117 @@
             }
             100% {
                 transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .romantic-word {
+            position: fixed;
+            font-weight: bold;
+            opacity: 0.7;
+            animation: word-float 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes word-float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg);
+            }
+        }
+
+        .celebration-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff6b6b, #ffa8a8, #ffd8d8, #ff6b6b);
+            background-size: 400% 400%;
+            animation: gradient-shift 3s ease infinite;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .celebration-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .celebration-title {
+            font-size: clamp(2.5rem, 10vw, 4em);
+            margin-bottom: 20px;
+            animation: bounce 0.5s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .celebration-message {
+            font-size: clamp(1.2rem, 5vw, 2em);
+            margin-bottom: 30px;
+        }
+
+        .special-message {
+            font-size: clamp(1rem, 4vw, 1.5em);
+            font-style: italic;
+            margin-top: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #ff6b6b; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b; }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: gold;
+            border-radius: 50%;
+            animation: sparkle-twinkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sparkle-twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .music-note {
+            position: fixed;
+            color: rgba(255, 255, 255, 0.8);
+            animation: note-float 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes note-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -169,17 +278,98 @@
 
         // Create floating hearts
         function createHearts() {
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.className = 'heart';
                     heart.style.left = Math.random() * 100 + 'vw';
                     heart.style.animationDelay = Math.random() * 6 + 's';
+                    heart.style.animationDuration = (4 + Math.random() * 4) + 's';
                     hearts.appendChild(heart);
-                }, i * 300);
+                }, i * 200);
             }
         }
 
+        // Create romantic text particles
+        function createRomanticText() {
+            const romanticWords = ['Love', 'Forever', 'Always', 'You', 'Me', 'Together', 'Smile', 'Hugs', 'Kisses', 'Dream'];
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const word = document.createElement('div');
+                    word.className = 'romantic-word';
+                    word.textContent = romanticWords[Math.floor(Math.random() * romanticWords.length)];
+                    word.style.left = Math.random() * 100 + 'vw';
+                    word.style.animationDelay = Math.random() * 8 + 's';
+                    word.style.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                    word.style.fontSize = Math.random() * 10 + 14 + 'px';
+                    document.body.appendChild(word);
+                }, i * 400);
+            }
+        }
+
+
+
+        // Yes button celebration
+        yesBtn.addEventListener('click', function() {
+            // Create epic celebration
+            document.body.innerHTML = `
+                <div class="celebration-container">
+                    <div class="celebration-content">
+                        <h1 class="celebration-title">Yay! 💖🎉</h1>
+                        <p class="celebration-message">I knew it! You're the best! 💕</p>
+                        <div class="sparkles"></div>
+                        <div class="message-container">
+                            <p class="special-message">For the most amazing girlfriend in the world! 🌟</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Create enhanced confetti
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.width = Math.random() * 12 + 6 + 'px';
+                    confetti.style.height = Math.random() * 12 + 6 + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+                    document.body.appendChild(confetti);
+                }, i * 30);
+            }
+            
+            // Create floating sparkles
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 100 + 'vw';
+                    sparkle.style.animationDelay = Math.random() * 5 + 's';
+                    document.querySelector('.sparkles').appendChild(sparkle);
+                }, i * 100);
+            }
+            
+            // Add romantic music notes
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const note = document.createElement('div');
+                    note.className = 'music-note';
+                    note.textContent = '♪';
+                    note.style.left = Math.random() * 100 + 'vw';
+                    note.style.animationDelay = Math.random() * 4 + 's';
+                    note.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    document.body.appendChild(note);
+                }, i * 200);
+            }
+        });
+
+        // Start animations
+        createHearts();
+        createRomanticText();
+        
         // Make No button run away
         function moveNoButton() {
             const maxX = window.innerWidth - 100;
@@ -201,47 +391,6 @@
 
         // Mouse events for desktop
         noBtn.addEventListener('mouseover', moveNoButton);
-
-        // Yes button celebration
-        yesBtn.addEventListener('click', function() {
-            document.body.innerHTML = `
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    background: linear-gradient(45deg, #ff6b6b, #ffa8a8);
-                    color: white;
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                ">
-                    <div>
-                        <h1 style="font-size: clamp(2rem, 8vw, 3em); margin-bottom: 20px;">Yay! 💖🎉</h1>
-                        <p style="font-size: clamp(1rem, 4vw, 1.5em);">I knew it! You're the best! 💕</p>
-                    </div>
-                </div>
-            `;
-            
-            // Create confetti
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confetti.style.animationDelay = Math.random() * 2 + 's';
-                    document.body.appendChild(confetti);
-                }, i * 50);
-            }
-        });
-
-        // Start animations
-        createHearts();
-        
-        // Initial random position for No button
-        noBtn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-        noBtn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-        noBtn.style.position = 'fixed';
 
         // Prevent zoom on double-tap (iOS)
         document.addEventListener('touchstart', function(e) {
